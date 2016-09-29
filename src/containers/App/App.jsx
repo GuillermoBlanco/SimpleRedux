@@ -1,3 +1,9 @@
+import { connect } from 'react-redux';
+import { changeFontSize } from 'redux/modules/app';
 import { App } from 'components';
 
-export default App;
+const mapStateToProps = (state) => ({
+  fontSize: state.app.fontSize,
+});
+
+export default connect(mapStateToProps, { changeFontSize })(App);
