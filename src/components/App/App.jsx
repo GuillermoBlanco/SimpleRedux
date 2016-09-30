@@ -20,29 +20,45 @@ export default class App extends Component {
 
     let fontSizeNumber = Number(fontSize.replace(/[^\d]/g, ''));
     fontSizeNumber += increment;
+    fontSizeNumber = fontSizeNumber <= 4 ? 4 : fontSizeNumber;
     const measurement = fontSize.replace(/\d+/g, '');
 
     if (typeof changeFontSize === 'function') changeFontSize(`${fontSizeNumber}${measurement}`);
   }
 
+  _renderNav() {
+    return (
+      <nav className={styles.nav}>
+        <div className={styles.links}>
+          <IndexLink to="/" className={styles.link} activeClassName={styles['link--active']}>
+            List
+          </IndexLink>
+          <Link to="/details" className={styles.link} activeClassName={styles['link--active']}>
+            Details
+          </Link>
+        </div>
+        <div className={styles.appActions}>
+          <button className={styles.incrementFontSize} onClick={() => this._changeFontSize(1)}>
+            A+
+          </button>
+          <button className={styles.decrementFontSize} onClick={() => this._changeFontSize(-1)}>
+            A-
+          </button>
+        </div>
+      </nav>
+    );
+  }
+
   render() {
-    const { fontSize } = this.props;
+    const { fontSize, children } = this.props;
     const style = { fontSize };
-    const activeStyle = {
-      color: 'red',
-      fontWeight: 'bold',
-    };
 
     return (
       <div className={styles.root} style={style}>
-        <button onClick={() => this._changeFontSize(1)}>A+</button>
-        <button onClick={() => this._changeFontSize(-1)}>A-</button>
-
-        <IndexLink to="/" activeStyle={activeStyle}>List</IndexLink>
-        <Link to="/details" activeStyle={activeStyle}>Details</Link>
+        {this._renderNav()}
 
         <div className={styles.container}>
-          {this.props.children}
+          {children}
         </div>
       </div>
     );
